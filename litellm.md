@@ -70,14 +70,15 @@ api_key: "os.environ/CHATGPT_API_KEY"
 
 The proxy resolves it once at config load. The current providers and their env vars:
 
-| Provider        | `litellm_params.model` prefix | Env var            |
-| --------------- | ----------------------------- | ------------------ |
-| OpenAI          | _(none — bare name)_          | `CHATGPT_API_KEY`  |
-| Anthropic       | `anthropic/`                  | `CLAUDE_API_KEY`   |
-| Google          | `gemini/`                     | `GOOGLE_API_KEY`   |
-| Fireworks       | `fireworks_ai/`               | `FIREWORK_KEY`     |
-| Together        | `together_ai/`                | `TOGETHER_API_KEY` |
-| IO Intelligence | `openai/` + `api_base`        | `IONET_API_KEY`    |
+| Provider        | `litellm_params.model` prefix | Env var              |
+| --------------- | ----------------------------- | -------------------- |
+| OpenAI          | _(none — bare name)_          | `CHATGPT_API_KEY`    |
+| Anthropic       | `anthropic/`                  | `CLAUDE_API_KEY`     |
+| Google          | `gemini/`                     | `GOOGLE_API_KEY`     |
+| OpenRouter      | `openrouter/`                 | `OPENROUTER_API_KEY` |
+| Fireworks       | `fireworks_ai/`               | `FIREWORK_KEY`       |
+| Together        | `together_ai/`                | `TOGETHER_API_KEY`   |
+| IO Intelligence | `openai/` + `api_base`        | `IONET_API_KEY`      |
 
 Set these in `server/.env` (loaded via `godotenv` at startup) or in the shell before running the server.
 
