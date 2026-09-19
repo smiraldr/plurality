@@ -134,7 +134,10 @@ async def embeddings(request: Request):
     model = body.get("model", "")
     input_text = body.get("input", "")
 
-    response = await router.aembedding(model=model, input=[input_text] if isinstance(input_text, str) else input_text, extra_headers=extra_headers())
+    try:
+        response = await router.aembedding(model=model, input=[input_text] if isinstance(input_text, str) else input_text, extra_headers=extra_headers())
+    except Exception as e:
+        return _upstream_error_response(e, "embeddings")
     return JSONResponse(content=response.model_dump())
 
 
@@ -162,7 +165,10 @@ async def chat_completions(request: Request):
         kwargs["stream_options"] = stream_options
 
     if not stream:
-        response = await router.acompletion(**kwargs)
+        try:
+            response = await router.acompletion(**kwargs)
+        except Exception as e:
+            return _upstream_error_response(e, "chat")
         result = response.model_dump()
 
         usage = result.get("usage", {})
@@ -174,7 +180,10 @@ async def chat_completions(request: Request):
         return JSONResponse(content=result)
 
     # Streaming
-    response = await router.acompletion(**kwargs)
+    try:
+        response = await router.acompletion(**kwargs)
+    except Exception as e:
+        return _upstream_error_response(e, "chat")
 
     async def generate():
         collected_text = ""
@@ -274,7 +283,7 @@ async def _inline_image_urls(data):
                 logger.warning(f"Could not fetch image url {d.get('url')!r}: {e}")
 
 
-def _image_error_response(e):
+def _upstream_error_response(e, what):
     """Surface the real upstream/litellm error instead of a bare 500."""
     status = getattr(e, "status_code", None)
     try:
@@ -283,8 +292,12 @@ def _image_error_response(e):
         status = None
     if not status or status < 400 or status > 599:
         status = 502
-    logger.warning(f"image request failed: {e}")
+    logger.warning(f"{what} request failed: {e}")
     return JSONResponse(status_code=status, content={"error": str(e)})
+
+
+def _image_error_response(e):
+    return _upstream_error_response(e, "image")
 
 
 @app.post("/v1/images/generations")
