@@ -96,6 +96,8 @@ IO Intelligence (io.net) is an OpenAI-compatible endpoint, so entries use the `o
     supports_function_calling: true
 ```
 
+Access tiers: io.net's catalog flags some models as `higher_tier_required` — at the time of writing `zai-org/GLM-5.3` and `deepseek-ai/DeepSeek-R1-0528` need an io.net access tier above basic, while `meta-llama/Llama-3.3-70B-Instruct` works on the basic tier. A key without the required tier gets an authentication/permission error from io.net itself.
+
 ## Image gen, TTS, and STT — passthrough mode
 
 These three modes don't go through LiteLLM's native router (LiteLLM's audio coverage is patchy outside OpenAI). Instead the proxy forwards the request to a URL you specify. Tell it where with `model_info.endpoint_url`:
