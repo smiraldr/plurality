@@ -378,7 +378,10 @@ async def audio_speech(request: Request):
     voice = body.pop("voice", "")
     response_format = body.get("response_format", "mp3")
 
-    response = await router.aspeech(model=model, input=input_text, voice=voice, extra_headers=extra_headers(), **body)
+    try:
+        response = await router.aspeech(model=model, input=input_text, voice=voice, extra_headers=extra_headers(), **body)
+    except Exception as e:
+        return _upstream_error_response(e, "audio speech")
     # litellm returns an HttpxBinaryResponseContent wrapper; .content is the raw audio bytes.
     return Response(
         content=response.content,
@@ -405,7 +408,10 @@ async def audio_transcriptions(request: Request):
         if value is not None:
             kwargs[key] = value
 
-    response = await router.atranscription(file=(filename, file_bytes), model=model, extra_headers=extra_headers(), **kwargs)
+    try:
+        response = await router.atranscription(file=(filename, file_bytes), model=model, extra_headers=extra_headers(), **kwargs)
+    except Exception as e:
+        return _upstream_error_response(e, "audio transcription")
     # response_format=text/srt/vtt yields a plain string; JSON formats yield an object.
     if isinstance(response, str):
         return Response(content=response, media_type="text/plain")
