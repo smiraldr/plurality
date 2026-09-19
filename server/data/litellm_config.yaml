@@ -46,8 +46,8 @@ model_list:
   - model_name: "glm-5.3"
     litellm_params:
       model: "openai/zai-org/GLM-5.3"
-      api_base: "https://api.intelligence.io.solutions/api/v1"
       api_key: "os.environ/IONET_API_KEY"
+      api_base: "https://api.intelligence.io.solutions/api/v1"
     model_info:
       mode: "chat"
       supports_vision: false
@@ -55,8 +55,8 @@ model_list:
   - model_name: "deepseek-r1"
     litellm_params:
       model: "openai/deepseek-ai/DeepSeek-R1-0528"
-      api_base: "https://api.intelligence.io.solutions/api/v1"
       api_key: "os.environ/IONET_API_KEY"
+      api_base: "https://api.intelligence.io.solutions/api/v1"
     model_info:
       mode: "chat"
       supports_vision: false
@@ -64,8 +64,8 @@ model_list:
   - model_name: "llama-3.3-70b"
     litellm_params:
       model: "openai/meta-llama/Llama-3.3-70B-Instruct"
-      api_base: "https://api.intelligence.io.solutions/api/v1"
       api_key: "os.environ/IONET_API_KEY"
+      api_base: "https://api.intelligence.io.solutions/api/v1"
     model_info:
       mode: "chat"
       supports_vision: false
